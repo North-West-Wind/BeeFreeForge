@@ -5,16 +5,26 @@ import net.minecraft.tileentity.BeehiveTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
 @Mixin(BeehiveTileEntity.class)
 public abstract class BeehiveTEMixin extends TileEntity implements ITickableTileEntity {
     public BeehiveTEMixin(TileEntityType<?> p_i48289_1_) {
         super(p_i48289_1_);
+    }
+
+    private BlockPos hivePos;
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void constructInjector(CallbackInfo ci){
+        hivePos = this.getBlockPos();
     }
 
     @Redirect(
@@ -26,7 +36,11 @@ public abstract class BeehiveTEMixin extends TileEntity implements ITickableTile
     )
     private boolean isRaining(World world){
         if(BeeFreeForge.config.beesIgnoreWeather.get()){
-            return false;
+            if(BeeFreeForge.config.beesHurtFromRain.get()){
+               if(world.isRaining() && world.canSeeSky(hivePos.above())){
+                   return false;
+               } else return true;
+            } else return false;
         } else {
             return world.isRaining();
         }
