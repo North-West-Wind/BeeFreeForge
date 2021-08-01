@@ -3,7 +3,6 @@ package cocona20xx.beefreeforge.mixin;
 import cocona20xx.beefreeforge.BeeFreeForge;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IAngerable;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.passive.IFlyingAnimal;
@@ -23,7 +22,7 @@ public abstract class BeeEntityMixin extends AnimalEntity implements IAngerable,
 
     @Inject(method = "aiStep()V", at = @At("HEAD"))
     private void addRainDamage(CallbackInfo ci){
-        if (!this.level.isClientSide && this.isInWaterRainOrBubble()) {
+        if (!this.level.isClientSide && this.isInWaterRainOrBubble() && BeeFreeForge.config.beesHurtFromRain.get()) {
             this.hurt(DamageSource.DROWN, 1.0F);
         }
     }

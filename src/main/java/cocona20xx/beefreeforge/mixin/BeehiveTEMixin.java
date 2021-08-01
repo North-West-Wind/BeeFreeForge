@@ -37,9 +37,7 @@ public abstract class BeehiveTEMixin extends TileEntity implements ITickableTile
     private boolean isRaining(World world){
         if(BeeFreeForge.config.beesIgnoreWeather.get()){
             if(BeeFreeForge.config.beesHurtFromRain.get()){
-               if(world.isRaining() && world.canSeeSky(hivePos.above())){
-                   return false;
-               } else return true;
+                return world.isRaining() && world.canSeeSky(hivePos.above());
             } else return false;
         } else {
             return world.isRaining();
