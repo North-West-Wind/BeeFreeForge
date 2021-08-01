@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 
 group = 'cocona20xx'
-version = 'v1'
+version = 'v1.1'
 archivesBaseName = 'BeeFreeForge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
