@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "cocona20xx.beefreeforge.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "BeeFreeForge.refmap.json",
+  "mixins": [
+    "BeeEntityMixin",
+    "BeeEntityMixin$PollinateGoalMixin",
+    "BeehiveTEMixin",
+    "EntitySnowEffectMixin"
+  ],
+  "minVersion": "0.8"
+}
