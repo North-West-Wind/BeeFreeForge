@@ -1,11 +1,12 @@
 package cocona20xx.beefreeforge.mixin;
 
 import cocona20xx.beefreeforge.BeeFreeForge;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.Heightmap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.Heightmap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +18,7 @@ public abstract class EntitySnowEffectMixin {
 
     @Shadow public abstract BlockPos blockPosition();
 
-    @Shadow public World level;
+    @Shadow public Level level;
 
     @Inject(method = "isInRain", at = @At("RETURN"), cancellable = true)
     private void isInRainInjector(CallbackInfoReturnable<Boolean> cir){
@@ -28,16 +29,16 @@ public abstract class EntitySnowEffectMixin {
 
     }
 
-    private boolean snowCheck(BlockPos pos, World level){
+    private boolean snowCheck(BlockPos pos, Level level){
         if(!level.isRaining()){
             return false;
         } else if(!level.canSeeSky(pos)){
             return false;
-        } else if(level.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING, pos).getY() > pos.getY()){
+        } else if(level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()){
             return false;
         } else {
-            Biome biome = level.getBiome(pos);
-            return biome.getPrecipitation() == Biome.RainType.SNOW;
+            Holder<Biome> biome = level.getBiome(pos);
+            return biome.value().getPrecipitation() == Biome.Precipitation.SNOW;
         }
     }
 }
